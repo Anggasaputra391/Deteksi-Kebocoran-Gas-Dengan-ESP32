@@ -1,0 +1,66 @@
+
+#define BLYNK_TEMPLATE_ID "TMPL64WMtNCjq"
+#define BLYNK_TEMPLATE_NAME "Deteksi Gas Bocor"
+#define BLYNK_AUTH_TOKEN "EmKuoQaB0XSaN-44YAwuX1_AiJWMjb2U"
+
+#define BLYNK_PRINT Serial
+char ssid[] = "Angga";
+char pass[] = "12345678";
+
+#define MQ2_SENSOR  15 
+#define BUZZ 2
+#define LED 4
+
+#include <BlynkSimpleEsp32.h>
+ 
+char auth[] = BLYNK_AUTH_TOKEN;
+boolean st;
+int i,j;
+
+//==============================
+void cek_Gas(){  
+    if((digitalRead(MQ2_SENSOR)==LOW)&&(j==0)){
+      digitalWrite(BUZZ,HIGH);
+      Blynk.logEvent("awas", "Gas Bocor Terdeteksi, waspada !");
+      Serial.println("Sensor ON...");
+      j=1;
+      delay(500);
+    }
+    else if((digitalRead(MQ2_SENSOR)==HIGH)&&(j==1)){
+      digitalWrite(BUZZ,LOW);      
+      Serial.println("Sensor OFF");
+      j=0;
+      delay(500);
+    }
+}
+//==============================
+
+void setup()
+{
+  Serial.begin(115200);   
+  pinMode(MQ2_SENSOR,INPUT);
+  pinMode(BUZZ, OUTPUT);   
+  pinMode(LED, OUTPUT);     
+  Blynk.begin(auth, ssid, pass); 
+  Serial.println("");
+  Serial.println("WiFi connected");
+  digitalWrite(BUZZ,HIGH);
+  delay(100);
+  digitalWrite(BUZZ,LOW);
+  delay(20);
+  digitalWrite(BUZZ,HIGH);
+  delay(100);
+  digitalWrite(BUZZ,LOW);
+  delay(20);
+}
+//==============================
+
+void loop()
+{  
+  for(i=0;i<100;i++){  
+   cek_Gas();  
+   Blynk.run(); 
+   delay(10);
+  }
+  digitalWrite(LED,!digitalRead(LED)); 
+}
