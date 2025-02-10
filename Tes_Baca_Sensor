@@ -1,0 +1,23 @@
+
+#define MQ2_SENSOR  15 
+#define BUZZ 2
+#define LED 4
+ 
+void setup() {
+  pinMode(LED, OUTPUT);   
+  pinMode(BUZZ, OUTPUT);
+  pinMode(MQ2_SENSOR, INPUT);  
+}
+ 
+void loop() { 
+ if(digitalRead(MQ2_SENSOR)==LOW){
+   digitalWrite(BUZZ,HIGH);
+   digitalWrite(LED,HIGH);
+   delay(2000);
+ }
+ else{
+   digitalWrite(BUZZ,LOW);
+   digitalWrite(LED,LOW);
+ }
+}
+ 
